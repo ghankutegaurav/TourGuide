@@ -24,5 +24,5 @@ public class User {
 	
 	private String about;
 	
-	private List<>
+	//private List<>
 }
