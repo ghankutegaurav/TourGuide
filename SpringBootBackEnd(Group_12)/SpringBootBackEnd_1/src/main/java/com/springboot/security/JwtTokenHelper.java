@@ -20,7 +20,7 @@ public class JwtTokenHelper {
 	private String secret ="jwtTokenKey";
 	
 	//retrieve username from jwt token
-	public String getUsernameFromToen(String token) {
+	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 		//return getAllClaimsFromToken(token,Claims::getSubject);
 	}
@@ -64,7 +64,7 @@ public class JwtTokenHelper {
 	
 	//validate token
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		final String username=getUsernameFromToen(token);
+		final String username=getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 }
