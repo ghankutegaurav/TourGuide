@@ -3,6 +3,14 @@ package com.springboot.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +25,9 @@ import com.springboot.entities.Customer;
 import com.springboot.entities.Details;
 import com.springboot.entities.Logs;
 import com.springboot.entities.Packages;
+import com.springboot.payloads.JwtAuthRequest;
+import com.springboot.payloads.JwtAuthResponse;
+import com.springboot.security.JwtTokenHelper;
 import com.springboot.services.CitiesServices;
 import com.springboot.services.CustomerSevices;
 import com.springboot.services.DetailsServices;
@@ -43,6 +54,15 @@ public class MainController {
 	
 	@Autowired
 	private LogsServices logsServices;
+	
+	@Autowired
+	private  JwtTokenHelper jwtTokenHelper;
+	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 	@GetMapping("/home")
 	public String home() {
@@ -123,5 +143,27 @@ public class MainController {
 			return true;
 		}
 		return false;
+	}
+	
+	//jwt methods
+	@PostMapping(value="/login")
+	public ResponseEntity<JwtAuthResponse>createToken(
+			@RequestBody JwtAuthRequest request){
+		this.authenticate(request.getEmail(),request.getPassword());
+		UserDetails userDetails=this.userDetailsService.loadUserByUsername(request.getEmail());
+		String token=this.jwtTokenHelper.generateToken(userDetails);
+		JwtAuthResponse authResponse = new JwtAuthResponse();
+		authResponse.setToken(token);
+		return new ResponseEntity<JwtAuthResponse>(authResponse,HttpStatus.OK);
+	}
+
+	private void authenticate(String email, String password) {
+		// TODO Auto-generated method stub
+		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
+				new UsernamePasswordAuthenticationToken(email, password);
+	
+		this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+	
+		
 	}
 }

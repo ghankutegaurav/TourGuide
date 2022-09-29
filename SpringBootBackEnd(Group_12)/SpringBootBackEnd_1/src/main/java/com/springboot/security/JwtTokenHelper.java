@@ -21,13 +21,8 @@ public class JwtTokenHelper {
 	
 	//retrieve username from jwt token
 	public String getUsernameFromToen(String token) {
-		//return getClaimFromToken(token, Claims::getSubject);
-		return getAllClaimFromToken(token,Claims::getSubject);
-	}
-	
-	private String getAllClaimFromToken(String token, Object object) {
-		// TODO Auto-generated method stub
-		return null;
+		return getClaimFromToken(token, Claims::getSubject);
+		//return getAllClaimsFromToken(token,Claims::getSubject);
 	}
 
 	//retrieve expiration date from jwt token
@@ -35,7 +30,7 @@ public class JwtTokenHelper {
 		return getClaimFromToken(token, Claims::getExpiration);
 	}
 	
-	public <T> getClaimFromToken(String token,Function<Claims, R> claimsResolver){
+	public <T> T getClaimFromToken(String token,Function<Claims, T> claimsResolver){
 		final Claims claims = getAllClaimsFromToken(token);
 		return claimsResolver.apply(claims);
 	}
