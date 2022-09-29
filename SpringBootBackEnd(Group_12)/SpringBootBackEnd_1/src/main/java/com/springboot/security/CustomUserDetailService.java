@@ -8,21 +8,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.springboot.entities.User;
-import com.springboot.repositories.UserRepository;
-
-import lombok.Setter;
-
-import java.lang.Exception;
+import com.springboot.exceptions.ResourceNotFoundException;
+import com.springboot.repositories.UserRepo;
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailService implements UserDetailsService {
 
 	@Autowired
-	private UserRepository userRepository;
-	
+	private UserRepo userRepo;
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException  {
-		// loading the user from the database
-		User user=this.userRepository.findByEmail(username).orElseThrow(()-> new UsernameNotFoundException("User: "+username));
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		//loading  user from database by username
+		User user =this.userRepo.findByEmail(username).orElseThrow(()->new ResourceNotFoundException("User","email: "+username,0));
+		//return null;
 		return user;
 	}
 
