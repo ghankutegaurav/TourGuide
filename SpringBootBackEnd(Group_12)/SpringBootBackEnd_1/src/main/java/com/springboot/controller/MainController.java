@@ -55,14 +55,14 @@ public class MainController {
 	@Autowired
 	private LogsServices logsServices;
 	
-	@Autowired
-	private  JwtTokenHelper jwtTokenHelper;
-	
-	@Autowired
-	private UserDetailsService userDetailsService;
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
+//	@Autowired
+//	private  JwtTokenHelper jwtTokenHelper;
+//	
+//	@Autowired
+//	private UserDetailsService userDetailsService;
+//	
+//	@Autowired
+//	private AuthenticationManager authenticationManager;
 	
 	@GetMapping("/home")
 	public String home() {
@@ -145,25 +145,25 @@ public class MainController {
 		return false;
 	}
 	
-	//jwt methods
-	@PostMapping(value="/login")
-	public ResponseEntity<JwtAuthResponse>createToken(
-			@RequestBody JwtAuthRequest request){
-		this.authenticate(request.getEmail(),request.getPassword());
-		UserDetails userDetails=this.userDetailsService.loadUserByUsername(request.getEmail());
-		String token=this.jwtTokenHelper.generateToken(userDetails);
-		JwtAuthResponse authResponse = new JwtAuthResponse();
-		authResponse.setToken(token);
-		return new ResponseEntity<JwtAuthResponse>(authResponse,HttpStatus.OK);
-	}
-
-	private void authenticate(String email, String password) {
-		// TODO Auto-generated method stub
-		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
-				new UsernamePasswordAuthenticationToken(email, password);
-	
-		this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-	
-		
-	}
+//	//jwt methods
+//	@PostMapping(value="/login")
+//	public ResponseEntity<JwtAuthResponse>createToken(
+//			@RequestBody JwtAuthRequest request){
+//		this.authenticate(request.getEmail(),request.getPassword());
+//		UserDetails userDetails=this.userDetailsService.loadUserByUsername(request.getEmail());
+//		String token=this.jwtTokenHelper.generateToken(userDetails);
+//		JwtAuthResponse authResponse = new JwtAuthResponse();
+//		authResponse.setToken(token);
+//		return new ResponseEntity<JwtAuthResponse>(authResponse,HttpStatus.OK);
+//	}
+//
+//	private void authenticate(String email, String password) {
+//		// TODO Auto-generated method stub
+//		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
+//				new UsernamePasswordAuthenticationToken(email, password);
+//	
+//		this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+//	
+//		
+//	}
 }
