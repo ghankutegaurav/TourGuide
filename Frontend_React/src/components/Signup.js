@@ -8,7 +8,7 @@ import * as yup from "yup"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
+/*Added*/
 const Signup = () => {
   
   const signUpSchema = yup.object().shape({
